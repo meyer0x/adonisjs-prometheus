@@ -1,26 +1,8 @@
 {
-  "name": "@julr/adonisjs-prometheus",
-  "type": "module",
-  "version": "0.0.8",
+  "name": "@meyer0x/adonisjs-prometheus",
   "description": "Prometheus wrapper for AdonisJS",
-  "author": "Julien Ripouteau <julien@ripouteau.com>",
-  "license": "MIT",
-  "homepage": "https://github.com/Julien-R44/adonis5-prometheus#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Julien-R44/adonis5-prometheus.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Julien-R44/adonis5-prometheus/issues"
-  },
-  "keywords": [
-    "adonisjs",
-    "adonis",
-    "prometheus",
-    "adonis-prometheus",
-    "monitoring",
-    "grafana"
-  ],
+  "version": "1.0.0",
+  "type": "module",
   "exports": {
     ".": "./build/index.js",
     "./types": "./build/src/types.js"
@@ -40,13 +22,6 @@
     "quick:test": "node --loader=ts-node/esm bin/test.ts",
     "typecheck": "tsc --noEmit"
   },
-  "peerDependencies": {
-    "@adonisjs/assembler": "6.1.3-25",
-    "@adonisjs/core": "^6.1.1-0"
-  },
-  "dependencies": {
-    "prom-client": "^15.1.2"
-  },
   "devDependencies": {
     "@adonisjs/assembler": "6.1.3-25",
     "@adonisjs/core": "^6.9.0",
@@ -64,28 +39,24 @@
     "copyfiles": "^2.4.1",
     "defu": "^6.1.4",
     "del-cli": "^5.1.0",
-    "eslint": "^8.57.0",
+    "eslint": "^8.12.0",
     "prettier": "^3.2.5",
     "release-it": "^17.3.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   },
+  "dependencies": {
+    "prom-client": "^15.1.2"
+  },
+  "peerDependencies": {
+    "@adonisjs/assembler": "6.1.3-25",
+    "@adonisjs/core": "^6.1.1-0"
+  },
+  "author": "Meyer Attal <meyer@attal.dev>",
   "prettier": "@julr/tooling-configs/prettier",
   "publishConfig": {
     "access": "public",
     "tag": "latest"
-  },
-  "release-it": {
-    "git": {
-      "commitMessage": "chore(release): @julr/adonisjs-prometheus@${version}",
-      "tagAnnotation": "release ${version}",
-      "tagName": "@julr/adonisjs-prometheus@${version}"
-    },
-    "github": {
-      "release": true,
-      "releaseName": "@julr/adonisjs-prometheus@${version}",
-      "web": true
-    }
   },
   "c8": {
     "reporter": [

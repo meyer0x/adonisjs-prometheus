@@ -1,6 +1,6 @@
-import { test } from '@japa/runner'
-import { IgnitorFactory } from '@adonisjs/core/factories'
 import Configure from '@adonisjs/core/commands/configure'
+import { IgnitorFactory } from '@adonisjs/core/factories'
+import { test } from '@japa/runner'
 
 import { BASE_URL } from './helpers.js'
 
@@ -31,7 +31,7 @@ test.group('Configure package', () => {
     await command.exec()
 
     await assert.fileExists('config/prometheus.ts')
-    await assert.fileContains('adonisrc.ts', '@julr/adonisjs-prometheus/prometheus_provider')
+    await assert.fileContains('adonisrc.ts', '@meyer0x/adonisjs-prometheus/prometheus_provider')
     await assert.fileContains('config/prometheus.ts', 'defineConfig')
   }).timeout(10_000)
 })

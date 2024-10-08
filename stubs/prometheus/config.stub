@@ -2,7 +2,7 @@
   exports({ to: app.configPath('prometheus.ts') })
 }}}
 
-import { defineConfig } from '@julr/adonisjs-prometheus'
+import { defineConfig } from '@meyer0x/adonisjs-prometheus'
 
 export default defineConfig({
   /*

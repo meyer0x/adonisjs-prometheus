@@ -17,6 +17,6 @@ export async function configure(command: Configure) {
    * Add provider to the rc file
    */
   await codemods.updateRcFile((rcFile) => {
-    rcFile.addProvider('@julr/adonisjs-prometheus/prometheus_provider')
+    rcFile.addProvider('@meyer0x/adonisjs-prometheus/prometheus_provider')
   })
 }

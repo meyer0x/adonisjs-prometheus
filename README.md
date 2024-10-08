@@ -1,6 +1,7 @@
 <div align="center">
   <img src="https://i.imgur.com/ny3ka9X.png"  />  
 </div>
+# This is a fork of the real repo. Please don't use it is for my project only. 
 
 # adonisjs-prometheus
 
@@ -9,7 +10,7 @@
 ## Installation
 ```
 pnpm i adonis5-prometheus
-node ace configure @julr/adonisjs-prometheus
+node ace configure @meyer0x/adonisjs-prometheus
 ```
 
 ## Usage
