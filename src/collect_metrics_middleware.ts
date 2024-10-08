@@ -1,16 +1,22 @@
-import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import type { PrometheusConfig } from '@ioc:Adonis/Prometheus'
-import type { Metrics } from './Metrics'
+import type { Histogram } from 'prom-client'
+import type { HttpContext } from '@adonisjs/core/http'
+import type { NextFn } from '@adonisjs/core/types/http'
 
-type MetricStartTimerReturn = ReturnType<Metrics['httpMetric']['startTimer']>
+import type { Metrics } from './metrics.js'
+import type { PrometheusConfig } from './types.js'
 
-export class CollectPerformanceMetrics {
-  constructor(protected metrics: Metrics, protected config: PrometheusConfig) {}
+type MetricStartTimerReturn = ReturnType<Histogram['startTimer']>
+
+export default class CollectMetricsMiddleware {
+  constructor(
+    protected metrics: Metrics,
+    protected config: PrometheusConfig,
+  ) {}
 
   /**
    * Check if current route is excluded by the user in the configuration
    */
-  private isRouteExcluded(ctx: HttpContextContract): boolean {
+  #isRouteExcluded(ctx: HttpContext): boolean {
     const excludedRoutes = this.config.httpMetric.excludedRoutes || []
 
     if (typeof excludedRoutes === 'function') {
@@ -23,14 +29,14 @@ export class CollectPerformanceMetrics {
   /**
    * Called when the request is finished.
    */
-  private async afterRequest(statusCode: number, stopHttpRequestTimer?: MetricStartTimerReturn) {
+  async #afterRequest(statusCode: number, stopHttpRequestTimer?: MetricStartTimerReturn) {
     const enableThroughputMetric = this.config.throughputMetric.enabled
     const httpMetricOptions = this.config.httpMetric
 
     /**
      * Track request throughput..
      */
-    if (enableThroughputMetric) this.metrics.throughputMetric.inc()
+    if (enableThroughputMetric) this.metrics.throughputMetric!.inc()
 
     /**
      * End HTTP request timer.
@@ -45,7 +51,7 @@ export class CollectPerformanceMetrics {
     }
   }
 
-  public async handle(ctx: HttpContextContract, next: () => Promise<void>) {
+  async handle(ctx: HttpContext, next: NextFn) {
     const { request, response, route } = ctx
     const httpMetricOptions = this.config.httpMetric
 
@@ -54,8 +60,9 @@ export class CollectPerformanceMetrics {
      * given options for url parsing.
      * The timer will be stopped when the request is finished.
      */
+
     let stopHttpRequestTimer: MetricStartTimerReturn | undefined
-    if (httpMetricOptions.enabled && !this.isRouteExcluded(ctx)) {
+    if (httpMetricOptions.enabled && !this.#isRouteExcluded(ctx)) {
       const includeRouteParams = httpMetricOptions.includeRouteParams
       const includeQueryParams = httpMetricOptions.includeQueryParams
 
@@ -64,7 +71,7 @@ export class CollectPerformanceMetrics {
         url += `?${request.parsedUrl.query}`
       }
 
-      stopHttpRequestTimer = this.metrics.httpMetric.startTimer({
+      stopHttpRequestTimer = this.metrics.httpMetric!.startTimer({
         method: request.method(),
         url,
       })
@@ -78,9 +85,9 @@ export class CollectPerformanceMetrics {
      */
     try {
       await next()
-      this.afterRequest(response.response.statusCode, stopHttpRequestTimer)
+      this.#afterRequest(response.response.statusCode, stopHttpRequestTimer)
     } catch (err) {
-      this.afterRequest(err.status || 500, stopHttpRequestTimer)
+      this.#afterRequest(err.status || 500, stopHttpRequestTimer)
       throw err
     }
   }
