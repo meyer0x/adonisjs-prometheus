@@ -1,11 +1,20 @@
 {
   "name": "@meyer0x/adonisjs-prometheus",
   "description": "Prometheus wrapper for AdonisJS",
-  "version": "1.0.0",
+  "version": "1.2.1",
   "type": "module",
+  "files": [
+    "build",
+    "node_modules",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
   "exports": {
     ".": "./build/index.js",
-    "./types": "./build/src/types.js"
+    "./types": "./build/src/types.js",
+    "./providers/prometheus_provider": "./build/providers/prometheus_provider.js",
+    "./collect_metrics_middleware": "./build/src/collect_metrics_middleware.js"
   },
   "scripts": {
     "pretest": "npm run lint",
